@@ -8,8 +8,8 @@ library(rCharts)
 
 sidebar <- dashboardSidebar(
   sidebarMenu(
-   menuItem("Correlation", tabName = "Correlation", icon = icon("dashboard")),
-   menuItem("Bootstrapping", icon = icon("th"), tabName = "Bootstrapping")
+   menuItem("Correlation", tabName = "Correlation", icon = icon("th")),
+   menuItem("Bootstrapping", icon = icon("bar-chart"), tabName = "Bootstrapping")
   )
 #   disable = TRUE
 )
