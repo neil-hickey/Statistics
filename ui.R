@@ -80,7 +80,7 @@ body <- dashboardBody(
     tabItem(tabName = "Bootstrapping",
       fluidRow(
         box(
-          title = "Correlation Bootstrap Graph", width = 12, solidHeader = TRUE,
+          title = "Correlation Bootstrap Graph", width = 12, solidHeader = TRUE, status = "primary",
           plotOutput("bootGraph")
         )
       )
@@ -88,7 +88,7 @@ body <- dashboardBody(
     tabItem(tabName = "TableView",
       fluidRow(
         box(
-          title = "Table View", width = 12, solidHeader = TRUE,
+          title = "Table View", width = 12, solidHeader = TRUE, status = "primary",
           dataTableOutput("datatable")
         )
       )

@@ -9,6 +9,10 @@ body > .main-header .navbar {
   margin-left: 330px;
 }
 
+.sidebar-menu {
+  width: 230px;
+}
+
 /*
 .sidebar-menu {
   margin-top:50px;
