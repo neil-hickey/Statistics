@@ -7,10 +7,13 @@ library(devtools)
 library(rCharts)
 
 sidebar <- dashboardSidebar(
+  # Decimal interval with step value
+  sliderInput("sample_size", "Sample Size:", min = 100, max = 2000, value = 1000, step= 100),
   sidebarMenu(
    menuItem("Correlation", tabName = "Correlation", icon = icon("th")),
    menuItem("Bootstrapping", icon = icon("bar-chart"), tabName = "Bootstrapping")
   )
+
 #   disable = TRUE
 )
 
@@ -65,7 +68,7 @@ body <- dashboardBody(
       fluidRow(
         box(
           title = "Correlation CI Graph", width = 9, solidHeader = TRUE, status = "primary",
-          plotOutput("CIGraph")
+          plotOutput("bootGraph")
         )
       )
     )
