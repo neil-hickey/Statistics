@@ -14,3 +14,8 @@ body > .main-header .navbar {
   margin-top:50px;
 }
 */
+
+
+ul, ol {
+  width: 185px;
+}

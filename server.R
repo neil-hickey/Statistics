@@ -4,11 +4,10 @@ library(shinydashboard)
 library(ggplot2)
 library(gridExtra)
 library(devtools)
-library(rCharts)
 library(boot) # load boot library
 
 #We need to write a function to obtain mean
-corboot <-function (x,indices) {
+corboot <- function (x,indices) {
   cor(x[,1][indices],x[,2][indices])
 }
 
@@ -21,7 +20,7 @@ shinyServer(function(input, output, session) {
       # User has not uploaded a file yet
       return(NULL)
     }
-    read.csv(infile$datapath, header=input$header,
+    read.csv(infile$datapath, header=TRUE,
             sep=input$sep, quote=input$quote)
   })
    
@@ -29,6 +28,10 @@ shinyServer(function(input, output, session) {
   samplesize <- reactive({
     input$sample_size
   })
+  
+  output$datatable <- renderDataTable(
+    filedata(), options = list(pageLength = 10)
+  )
   
   # function to output the main scatterplot
   output$plot1 <- renderPlot({  
@@ -40,23 +43,32 @@ shinyServer(function(input, output, session) {
     }
   })
   
+  # function to output the bootstrapped plots
+  output$bootGraph <- renderPlot({
+    f <- filedata()
+    if(!is.null(f)) {
+      bootres<-boot(data=f,statistic=corboot,R=samplesize())
+      plot(bootres)
+    }
+  })
+  
   # function to output the correlation value
   output$correlationBox <- renderValueBox({
     f <- filedata()
     
-      if(!is.null(f)) {
-        correl <- cor(f[,1],f[,2])
-        correl <- format(round(correl, 2), nsmall = 2)
-        valueBox(
-          paste0(correl, ""), "Correlation",
-          color = "navy"
-        )
-      }
-      else {
-        valueBox(
-          "", "Correlation Value", color = "navy"
-        )
-      }
+    if(!is.null(f)) {
+      correl <- cor(f[,1],f[,2])
+      correl <- format(round(correl, 2), nsmall = 2)
+      valueBox(
+        paste0(correl, ""), "Correlation",
+        color = "navy"
+      )
+    }
+    else {
+      valueBox(
+        "", "Correlation Value", color = "navy"
+      )
+    }
   })
     
   # function to output the confidence interval using bootstraping
@@ -81,13 +93,12 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  # function to output the bootstrapped plots
-  output$bootGraph <- renderPlot({
-    f <- filedata()
-    if(!is.null(f)) {
-      bootres<-boot(data=f,statistic=corboot,R=samplesize())
-      plot(bootres)
-    }
-  })
-  
+  # Send a pre-rendered image, and don't delete the image after sending it
+  output$myImage <- renderImage({
+    filename <- normalizePath(file.path('./images/inst.png'))
+    
+    # Return a list containing the filename
+    list(src = filename)
+  }, deleteFile = FALSE)
+    
 })

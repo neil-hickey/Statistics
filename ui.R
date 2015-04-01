@@ -4,16 +4,30 @@ library(shinydashboard)
 library(ggplot2)
 library(gridExtra)
 library(devtools)
-library(rCharts)
 
 sidebar <- dashboardSidebar(
-  # Decimal interval with step value
-  sliderInput("sample_size", "Sample Size:", min = 100, max = 2000, value = 1000, step= 100),
   sidebarMenu(
-   menuItem("Correlation", tabName = "Correlation", icon = icon("th")),
-   menuItem("Bootstrapping", icon = icon("bar-chart"), tabName = "Bootstrapping")
+    menuItem("Correlation", tabName = "Correlation", icon = icon("th")),
+    menuItem("Bootstrapping", icon = icon("bar-chart"), tabName = "Bootstrapping"),
+    menuItem("Table View", icon = icon("file-image-o"), tabName = "TableView")
+  ),
+  sliderInput("sample_size", "Sample Size:", min = 100, max = 5000, value = 1000, step= 100),
+  mainPanel(
+    tags$br(),
+    tags$br(),
+    tags$br(),
+    tags$br(),
+    tags$br(),
+    tags$br(),
+    tags$br(),
+    tags$br(),
+    h1("Instructions"),
+    tags$ul(
+        tags$li("Upload a File"),
+        tags$li("Ensure file is 2 columns with a header i.e.")
+      ),
+    imageOutput("myImage", height=100)
   )
-
 #   disable = TRUE
 )
 
@@ -47,7 +61,6 @@ body <- dashboardBody(
             ),
             multiple=FALSE
           ),
-          checkboxInput('header', 'Header', TRUE),
           radioButtons('sep', 'Separator',
             c(Comma=',',
             Semicolon=';',
@@ -67,8 +80,16 @@ body <- dashboardBody(
     tabItem(tabName = "Bootstrapping",
       fluidRow(
         box(
-          title = "Correlation CI Graph", width = 9, solidHeader = TRUE, status = "primary",
+          title = "Correlation Bootstrap Graph", width = 12, solidHeader = TRUE,
           plotOutput("bootGraph")
+        )
+      )
+    ),
+    tabItem(tabName = "TableView",
+      fluidRow(
+        box(
+          title = "Table View", width = 12, solidHeader = TRUE,
+          dataTableOutput("datatable")
         )
       )
     )
