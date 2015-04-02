@@ -30,7 +30,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$datatable <- renderDataTable(
-    filedata(), options = list(pageLength = 10)
+    filedata(), options = list(pageLength = 15)
   )
   
   # function to output the main scatterplot
@@ -82,7 +82,7 @@ shinyServer(function(input, output, session) {
       upper_ci <- format(round(a$percent[5], 2), nsmall = 2)
       ci <- paste(lower_ci," to ",upper_ci)
       valueBox(
-        paste0(ci), "Confidence Interval - for Correlation",
+        paste0(ci), "95% Confidence Interval (Bootstrap)",
         color = "navy"
       )
     }
